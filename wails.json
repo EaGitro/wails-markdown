@@ -1,0 +1,13 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "wails-markdown-ts",
+  "outputfilename": "wails-markdown-ts",
+  "frontend:install": "pnpm install",
+  "frontend:build": "pnpm run build",
+  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "EaGitro",
+    "email": "ea.gitro.sharp6@gmail.com"
+  }
+}
