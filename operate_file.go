@@ -7,12 +7,45 @@ import (
 	osrt "runtime"
 	"strings"
 
+	"time"
+
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type OperateFile struct {
-	path string
-	ctx  context.Context
+	ctx       context.Context
+	path      string       // file path
+	hotTicker *time.Ticker // hot-reload Ticker
+}
+
+func (f *OperateFile) SetupFileOperation(ctx context.Context) {
+	f.SetContext(ctx)
+	f.hotTicker = time.NewTicker(time.Second)
+	f.hotTicker.Stop()
+	go f.HotReload()
+}
+
+func (f *OperateFile) SetHotReloadTime(ms int) {
+	fmt.Println("set hot reload", ms, "ms")
+	if ms == 0 {
+		f.hotTicker.Stop()
+		return
+	}
+
+	// f.hotTicker.Stop()
+	f.hotTicker.Reset(time.Duration(ms) * time.Millisecond)
+}
+
+func (f *OperateFile) HotReload() {
+	fmt.Println("hot reload goroutine")
+	defer f.hotTicker.Stop()
+	for {
+		select {
+		case <-f.hotTicker.C:
+			fmt.Println("hot reload")
+			runtime.WindowExecJS(f.ctx, "window.reloadMd();")
+		}
+	}
 }
 
 func (a *OperateFile) SetContext(ctx context.Context) {
@@ -31,13 +64,16 @@ type OpenedFile struct {
 func (f *OperateFile) GetContent() OpenedFile {
 	var of OpenedFile
 	fmt.Println("filepath:", f.path)
+	if f.path == "" {
+		return of
+	}
 	content, err := os.ReadFile(f.path)
 	if err != nil {
 		of.Err = true
 		return of
 	}
 
-	fmt.Println(content)
+	// fmt.Println(content)
 
 	of.Err = false
 	of.FileContent = string(content)

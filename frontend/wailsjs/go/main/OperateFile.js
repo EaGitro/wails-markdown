@@ -10,12 +10,24 @@ export function GetContent() {
   return window['go']['main']['OperateFile']['GetContent']();
 }
 
+export function HotReload() {
+  return window['go']['main']['OperateFile']['HotReload']();
+}
+
 export function SetContext(arg1) {
   return window['go']['main']['OperateFile']['SetContext'](arg1);
 }
 
 export function SetFilePathWithDialog() {
   return window['go']['main']['OperateFile']['SetFilePathWithDialog']();
+}
+
+export function SetHotReloadTime(arg1) {
+  return window['go']['main']['OperateFile']['SetHotReloadTime'](arg1);
+}
+
+export function SetupFileOperation(arg1) {
+  return window['go']['main']['OperateFile']['SetupFileOperation'](arg1);
 }
 
 export function WriteFile(arg1) {

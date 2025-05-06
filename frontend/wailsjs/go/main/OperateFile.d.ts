@@ -7,8 +7,14 @@ export function ExistsFile():Promise<boolean>;
 
 export function GetContent():Promise<main.OpenedFile>;
 
+export function HotReload():Promise<void>;
+
 export function SetContext(arg1:context.Context):Promise<void>;
 
 export function SetFilePathWithDialog():Promise<void>;
+
+export function SetHotReloadTime(arg1:number):Promise<void>;
+
+export function SetupFileOperation(arg1:context.Context):Promise<void>;
 
 export function WriteFile(arg1:string):Promise<boolean>;

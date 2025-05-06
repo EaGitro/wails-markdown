@@ -64,6 +64,10 @@ func main() {
 			SubMenu: CreateNewMenu(CreateRadioMenus(
 				[]RadioMenuLabelsValues[int]{
 					{
+						label: "Stop Hot Reload",
+						value: 0,
+					},
+					{
 						label: "0.5sec",
 						value: 500,
 					},
@@ -78,6 +82,7 @@ func main() {
 				func(label string, value int) func(*menu.CallbackData) {
 					return func(cd *menu.CallbackData) {
 						/// TODO
+						of.SetHotReloadTime(value)
 					}
 				})...),
 		},
@@ -127,7 +132,7 @@ func main() {
 		// BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup: func(ctx context.Context) {
 			app.SetContext(ctx)
-			of.SetContext(ctx)
+			of.SetupFileOperation(ctx)
 			// AppMenuGlobal.SetContext(ctx)
 			// AppMenuGlobal.MenuSet(ctx)
 		},

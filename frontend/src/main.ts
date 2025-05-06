@@ -13,7 +13,7 @@ const md = markdownit({
     highlight: function (str, lang): string {
         if (lang && hljs.getLanguage(lang)) {
             try {
-                return '<pre>'+lang+'<code class="hljs">' +
+                return '<pre>' + lang + '<code class="hljs">' +
                     hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
                     '</code></pre>';
             } catch (__) { }
@@ -42,7 +42,7 @@ document.addEventListener('keydown', e => {
     }
 });
 
-
+// User's reload operation
 window.reloadMd = function () {
     try {
         GetContent().then((res) => {
@@ -58,6 +58,17 @@ window.reloadMd = function () {
 
 window.reloadMd();
 
+/**
+ * TODO: Hot reload
+// Hot reload 
+window.setMdContent = function (content: string) {
+try {
+    document.getElementById("app")!.innerHTML = md.render(content)
+} catch (error) {
+    console.log(error)
+}
+}
+**/
 
 // // Setup the greet function
 // window.greet = function () {
@@ -100,5 +111,6 @@ window.reloadMd();
 declare global {
     interface Window {
         reloadMd: () => void;
+        setMdContent: (content:string) => void;
     }
 }
