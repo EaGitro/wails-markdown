@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	osrt "runtime"
 	"strings"
@@ -26,7 +25,7 @@ func (f *OperateFile) SetupFileOperation(ctx context.Context) {
 }
 
 func (f *OperateFile) SetHotReloadTime(ms int) {
-	fmt.Println("set hot reload", ms, "ms")
+	PPrintln("set hot reload", ms, "ms")
 	if ms == 0 {
 		f.hotTicker.Stop()
 		return
@@ -37,12 +36,12 @@ func (f *OperateFile) SetHotReloadTime(ms int) {
 }
 
 func (f *OperateFile) HotReload() {
-	fmt.Println("hot reload goroutine")
+	PPrintln("hot reload goroutine")
 	defer f.hotTicker.Stop()
 	for {
 		select {
 		case <-f.hotTicker.C:
-			fmt.Println("hot reload")
+			PPrintln("hot reload")
 			runtime.WindowExecJS(f.ctx, "window.reloadMd();")
 		}
 	}
@@ -63,7 +62,7 @@ type OpenedFile struct {
 
 func (f *OperateFile) GetContent() OpenedFile {
 	var of OpenedFile
-	fmt.Println("filepath:", f.path)
+	PPrintln("filepath:", f.path)
 	if f.path == "" {
 		return of
 	}
@@ -73,7 +72,7 @@ func (f *OperateFile) GetContent() OpenedFile {
 		return of
 	}
 
-	// fmt.Println(content)
+	// PPrintln(content)
 
 	of.Err = false
 	of.FileContent = string(content)

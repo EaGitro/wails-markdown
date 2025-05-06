@@ -35,7 +35,7 @@ func main() {
 					Accelerator: keys.Control("r"),
 					Type:        menu.TextType,
 					Click: func(cd *menu.CallbackData) {
-						fmt.Println("wails menu ctrl")
+						PPrintln("wails menu ctrl")
 						runtime.WindowExecJS(of.ctx, "window.reloadMd();")
 					},
 					Hidden:   false,
@@ -46,7 +46,7 @@ func main() {
 					Accelerator: keys.Control("o"),
 					Type:        menu.TextType,
 					Click: func(cd *menu.CallbackData) {
-						fmt.Println("wails menu open")
+						PPrintln("wails menu open")
 						err := of.SetFilePathWithDialog()
 						if err != nil {
 							fmt.Fprintln(os.Stderr, "Error: Invalid file path")
@@ -93,7 +93,7 @@ func main() {
 	//
 
 	if IsProduction() {
-		fmt.Println("Prod mode")
+		PPrintln("Prod mode")
 		args := os.Args
 		if len(args) != 2 {
 			// panic("Error: Requiring a file path")
@@ -113,7 +113,7 @@ func main() {
 		}
 
 		if !of.ExistsFile() {
-			fmt.Println("Error: File does not exist")
+			PPrintln("Error: File does not exist")
 		}
 	}
 
