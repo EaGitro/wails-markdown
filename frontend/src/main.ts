@@ -46,7 +46,9 @@ document.addEventListener('keydown', e => {
 window.reloadMd = function () {
     try {
         GetContent().then((res) => {
-            document.getElementById("app")!.innerHTML = md.render(res.FileContent);
+            // console.log(res)
+            if (!res.Err && res.IsModified) 
+                document.getElementById("app")!.innerHTML = md.render(res.FileContent);
         }).catch((err) => {
             console.error(err);
         });

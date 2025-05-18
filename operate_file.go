@@ -8,13 +8,15 @@ import (
 
 	"time"
 
+	"github.com/cespare/xxhash/v2"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 type OperateFile struct {
-	ctx       context.Context
-	path      string       // file path
-	hotTicker *time.Ticker // hot-reload Ticker
+	ctx          context.Context
+	path         string       // file path
+	hotTicker    *time.Ticker // hot-reload Ticker
+	xxhashDigest uint64
 }
 
 func (f *OperateFile) SetupFileOperation(ctx context.Context) {
@@ -56,6 +58,7 @@ func NewOperateFile() *OperateFile {
 }
 
 type OpenedFile struct {
+	IsModified  bool   `json:IsModified`
 	FileContent string `json:"FileContent"`
 	Err         bool   `json:"Err"`
 }
@@ -72,10 +75,17 @@ func (f *OperateFile) GetContent() OpenedFile {
 		return of
 	}
 
+	digest := xxhash.Sum64(content)
 	// PPrintln(content)
 
+	of.IsModified = false
+	if f.xxhashDigest != digest {
+		of.FileContent = string(content)
+		of.IsModified = true
+		f.xxhashDigest = digest
+	}
 	of.Err = false
-	of.FileContent = string(content)
+	PPrintln(of)
 	return of
 }
 

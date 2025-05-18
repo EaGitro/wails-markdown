@@ -2,10 +2,12 @@
     "cSpell.words": [
         "assetserver",
         "bytedata",
+        "cespare",
         "hotc",
         "itemfunc",
         "itemfuncs",
         "osrt",
-        "wailsapp"
+        "wailsapp",
+        "xxhash"
     ]
 }
