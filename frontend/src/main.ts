@@ -8,7 +8,9 @@ import { GetContent } from "../wailsjs/go/main/OperateFile"
 
 import markdownit from "markdown-it";
 import hljs from 'highlight.js';
+import { riscvasm } from './highlightjs-riscvasm';
 
+hljs.registerLanguage("riscv", riscvasm);
 const md = markdownit({
     highlight: function (str, lang): string {
         if (lang && hljs.getLanguage(lang)) {
@@ -47,7 +49,7 @@ window.reloadMd = function () {
     try {
         GetContent().then((res) => {
             // console.log(res)
-            if (!res.Err && res.IsModified) 
+            if (!res.Err && res.IsModified)
                 document.getElementById("app")!.innerHTML = md.render(res.FileContent);
         }).catch((err) => {
             console.error(err);
@@ -113,6 +115,6 @@ try {
 declare global {
     interface Window {
         reloadMd: () => void;
-        setMdContent: (content:string) => void;
+        setMdContent: (content: string) => void;
     }
 }

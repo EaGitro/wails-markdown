@@ -43,3 +43,36 @@ type App struct {
 }
 ```
 
+```riscv
+ 	.file	"call-func.c"
+	.intel_syntax noprefix
+	.text
+	.globl	plus
+	.type	plus, @function
+plus:
+	endbr64
+	push	rbp
+	mov	rbp, rsp
+	mov	DWORD PTR -4[rbp], edi
+	mov	DWORD PTR -8[rbp], esi
+	mov	edx, DWORD PTR -4[rbp]
+	mov	eax, DWORD PTR -8[rbp]
+	add	eax, edx
+	pop	rbp
+	ret
+;; 省略
+
+
+main:
+	endbr64
+	push	rbp
+	mov	rbp, rsp
+	mov	esi, 4
+	mov	edi, 3
+	call	plus
+	pop	rbp
+	ret
+;; 省略
+ 
+```
+
