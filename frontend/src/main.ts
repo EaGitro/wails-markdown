@@ -10,6 +10,10 @@ import markdownit from "markdown-it";
 import hljs from 'highlight.js';
 import { riscvasm } from './highlightjs-riscvasm';
 
+//
+// start: markdown-it 
+// 
+
 hljs.registerLanguage("riscv", riscvasm);
 const md = markdownit({
     highlight: function (str, lang): string {
@@ -24,6 +28,30 @@ const md = markdownit({
         return '<pre><code class="hljs">' + md.utils.escapeHtml(str) + '</code></pre>';
     }
 });
+
+
+
+let defaultRender = md.renderer.rules.link_open || function (tokens, idx, options, _env, self) {
+    return self.renderToken(tokens, idx, options);
+};
+md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    // Below is an official example from https://github.com/markdown-it/markdown-it/blob/master/docs/architecture.md
+    // Add a new `target` attribute, or replace the value of the existing one.
+    // tokens[idx].attrSet('target', '_blank');
+
+    tokens[idx].attrSet("onclick",                          // Opens the URL in the system browser. 
+        `window.runtime.BrowserOpenURL("${tokens[idx].attrGet("href")}"); return false`    // see: https://wails.io/docs/reference/runtime/browser/
+    )
+
+    // Pass the token to the default renderer.
+    return defaultRender(tokens, idx, options, env, self);
+};
+
+
+
+// 
+// end : markdown-it
+// 
 
 document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.key === 's') {
@@ -116,5 +144,6 @@ declare global {
     interface Window {
         reloadMd: () => void;
         setMdContent: (content: string) => void;
+        runtime: any
     }
 }
